@@ -332,7 +332,7 @@ func newTLSServerSession(
 		return nil, err
 	}
 	s.cryptoStreamHandler = cs
-	s.streamsMap = newStreamsMap(s, s.newFlowController, s.config.MaxIncomingStreams, s.config.MaxIncomingUniStreams, s.perspective, s.version)
+	s.streamsMap = newStreamsMap(s, s.newFlowController, s.config.MaxIncomingStreams, s.config.MaxIncomingUniStreams, s.perspective, s.version, config.DisableSort)
 	s.streamFramer = newStreamFramer(s.cryptoStream, s.streamsMap, s.version)
 	s.packer = newPacketPacker(
 		s.destConnID,
@@ -396,7 +396,7 @@ var newTLSClientSession = func(
 	}
 	s.cryptoStreamHandler = cs
 	s.unpacker = newPacketUnpacker(cs, s.version)
-	s.streamsMap = newStreamsMap(s, s.newFlowController, s.config.MaxIncomingStreams, s.config.MaxIncomingUniStreams, s.perspective, s.version)
+	s.streamsMap = newStreamsMap(s, s.newFlowController, s.config.MaxIncomingStreams, s.config.MaxIncomingUniStreams, s.perspective, s.version, conf.DisableSort)
 	s.streamFramer = newStreamFramer(s.cryptoStream, s.streamsMap, s.version)
 	s.packer = newPacketPacker(
 		s.destConnID,
@@ -1169,7 +1169,7 @@ func (s *session) OpenUniStreamSync() (SendStream, error) {
 
 func (s *session) newStream(id protocol.StreamID) streamI {
 	flowController := s.newFlowController(id)
-	return newStream(id, s, flowController, s.version)
+	return newStream(id, s, flowController, s.version, s.config.DisableSort)
 }
 
 func (s *session) newFlowController(id protocol.StreamID) flowcontrol.StreamFlowController {

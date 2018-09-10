@@ -28,7 +28,7 @@ type cryptoStreamImpl struct {
 var _ cryptoStream = &cryptoStreamImpl{}
 
 func newCryptoStream(sender streamSender, flowController flowcontrol.StreamFlowController, version protocol.VersionNumber) cryptoStream {
-	str := newStream(version.CryptoStreamID(), sender, flowController, version)
+	str := newStream(version.CryptoStreamID(), sender, flowController, version, false)
 	return &cryptoStreamImpl{str}
 }
 
@@ -37,5 +37,5 @@ func newCryptoStream(sender streamSender, flowController flowcontrol.StreamFlowC
 // It must not be called concurrently with any other stream methods, especially Read and Write.
 func (s *cryptoStreamImpl) setReadOffset(offset protocol.ByteCount) {
 	s.receiveStream.readOffset = offset
-	s.receiveStream.frameQueue.readPos = offset
+	s.receiveStream.frameQueue.SetReadPos(offset)
 }

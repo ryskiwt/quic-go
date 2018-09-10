@@ -286,6 +286,7 @@ func populateServerConfig(config *Config) *Config {
 		MaxIncomingStreams:                    maxIncomingStreams,
 		MaxIncomingUniStreams:                 maxIncomingUniStreams,
 		ConnectionIDLength:                    connIDLen,
+		DisableSort:                           config.DisableSort,
 	}
 }
 

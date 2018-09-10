@@ -100,6 +100,7 @@ func newStream(streamID protocol.StreamID,
 	sender streamSender,
 	flowController flowcontrol.StreamFlowController,
 	version protocol.VersionNumber,
+	disableSort bool,
 ) *stream {
 	s := &stream{sender: sender, version: version}
 	senderForSendStream := &uniStreamSender{
@@ -121,7 +122,7 @@ func newStream(streamID protocol.StreamID,
 			s.completedMutex.Unlock()
 		},
 	}
-	s.receiveStream = *newReceiveStream(streamID, senderForReceiveStream, flowController, version)
+	s.receiveStream = *newReceiveStream(streamID, senderForReceiveStream, flowController, version, disableSort)
 	return s
 }
 

@@ -39,6 +39,7 @@ func newStreamsMap(
 	maxIncomingUniStreams int,
 	perspective protocol.Perspective,
 	version protocol.VersionNumber,
+	disableSort bool,
 ) streamManager {
 	m := &streamsMap{
 		perspective:       perspective,
@@ -58,13 +59,13 @@ func newStreamsMap(
 		firstIncomingUniStream = 3
 	}
 	newBidiStream := func(id protocol.StreamID) streamI {
-		return newStream(id, m.sender, m.newFlowController(id), version)
+		return newStream(id, m.sender, m.newFlowController(id), version, disableSort)
 	}
 	newUniSendStream := func(id protocol.StreamID) sendStreamI {
 		return newSendStream(id, m.sender, m.newFlowController(id), version)
 	}
 	newUniReceiveStream := func(id protocol.StreamID) receiveStreamI {
-		return newReceiveStream(id, m.sender, m.newFlowController(id), version)
+		return newReceiveStream(id, m.sender, m.newFlowController(id), version, disableSort)
 	}
 	m.outgoingBidiStreams = newOutgoingBidiStreamsMap(
 		firstOutgoingBidiStream,

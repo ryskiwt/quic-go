@@ -208,6 +208,8 @@ type Config struct {
 	MaxIncomingUniStreams int
 	// KeepAlive defines whether this peer will periodically send PING frames to keep the connection alive.
 	KeepAlive bool
+
+	DisableSort bool
 }
 
 // A Listener for incoming QUIC connections

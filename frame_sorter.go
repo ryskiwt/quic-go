@@ -7,17 +7,22 @@ import (
 	"github.com/ryskiwt/quic-go/internal/utils"
 )
 
-type frameSorter struct {
-	queue       map[protocol.ByteCount][]byte
-	readPos     protocol.ByteCount
-	finalOffset protocol.ByteCount
-	gaps        *utils.ByteIntervalList
-}
-
 var errDuplicateStreamData = errors.New("Duplicate Stream Data")
 
-func newFrameSorter() *frameSorter {
-	s := frameSorter{
+type frameSorter interface {
+	Push(data []byte, offset protocol.ByteCount, fin bool) error
+	Pop() ([]byte /* data */, bool /* fin */)
+	SetReadPos(protocol.ByteCount)
+}
+
+func newFrameSorter(disableSort bool) frameSorter {
+	if disableSort {
+		return &frameSorterDisabledImpl{
+			queue: make(chan []byte, 1024),
+		}
+	}
+
+	s := frameSorterImpl{
 		gaps:        utils.NewByteIntervalList(),
 		queue:       make(map[protocol.ByteCount][]byte),
 		finalOffset: protocol.MaxByteCount,
@@ -26,7 +31,18 @@ func newFrameSorter() *frameSorter {
 	return &s
 }
 
-func (s *frameSorter) Push(data []byte, offset protocol.ByteCount, fin bool) error {
+type frameSorterImpl struct {
+	queue       map[protocol.ByteCount][]byte
+	readPos     protocol.ByteCount
+	finalOffset protocol.ByteCount
+	gaps        *utils.ByteIntervalList
+}
+
+func (s *frameSorterImpl) SetReadPos(pos protocol.ByteCount) {
+	s.readPos = pos
+}
+
+func (s *frameSorterImpl) Push(data []byte, offset protocol.ByteCount, fin bool) error {
 	err := s.push(data, offset, fin)
 	if err == errDuplicateStreamData {
 		return nil
@@ -34,7 +50,7 @@ func (s *frameSorter) Push(data []byte, offset protocol.ByteCount, fin bool) err
 	return err
 }
 
-func (s *frameSorter) push(data []byte, offset protocol.ByteCount, fin bool) error {
+func (s *frameSorterImpl) push(data []byte, offset protocol.ByteCount, fin bool) error {
 	if fin {
 		s.finalOffset = offset + protocol.ByteCount(len(data))
 	}
@@ -147,7 +163,7 @@ func (s *frameSorter) push(data []byte, offset protocol.ByteCount, fin bool) err
 	return nil
 }
 
-func (s *frameSorter) Pop() ([]byte /* data */, bool /* fin */) {
+func (s *frameSorterImpl) Pop() ([]byte /* data */, bool /* fin */) {
 	data, ok := s.queue[s.readPos]
 	if !ok {
 		return nil, s.readPos >= s.finalOffset
@@ -155,4 +171,39 @@ func (s *frameSorter) Pop() ([]byte /* data */, bool /* fin */) {
 	delete(s.queue, s.readPos)
 	s.readPos += protocol.ByteCount(len(data))
 	return data, s.readPos >= s.finalOffset
+}
+
+type frameSorterDisabledImpl struct {
+	queue chan []byte
+	fin   bool
+}
+
+func (s *frameSorterDisabledImpl) SetReadPos(pos protocol.ByteCount) {}
+
+func (s *frameSorterDisabledImpl) Push(data []byte, offset protocol.ByteCount, fin bool) error {
+	if s.fin {
+		return nil
+	}
+
+	if len(data) == 0 {
+		return nil
+	}
+
+	s.queue <- data
+
+	if fin {
+		s.fin = true
+		close(s.queue)
+	}
+
+	return nil
+}
+
+func (s *frameSorterDisabledImpl) Pop() ([]byte /* data */, bool /* fin */) {
+	select {
+	case data, ok := <-s.queue:
+		return data, !ok
+	default:
+		return nil, s.fin
+	}
 }
