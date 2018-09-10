@@ -7,8 +7,8 @@ import (
 	"fmt"
 
 	"github.com/bifurcation/mint"
-	"github.com/lucas-clemente/quic-go/internal/protocol"
-	"github.com/lucas-clemente/quic-go/internal/utils"
+	"github.com/ryskiwt/quic-go/internal/protocol"
+	"github.com/ryskiwt/quic-go/internal/utils"
 )
 
 type transportParameterID uint16

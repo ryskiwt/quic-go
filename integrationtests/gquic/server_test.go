@@ -20,9 +20,9 @@ import (
 	"time"
 
 	quic "github.com/lucas-clemente/quic-go"
-	"github.com/lucas-clemente/quic-go/h2quic"
-	"github.com/lucas-clemente/quic-go/integrationtests/tools/testserver"
-	"github.com/lucas-clemente/quic-go/internal/protocol"
+	"github.com/ryskiwt/quic-go/h2quic"
+	"github.com/ryskiwt/quic-go/integrationtests/tools/testserver"
+	"github.com/ryskiwt/quic-go/internal/protocol"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

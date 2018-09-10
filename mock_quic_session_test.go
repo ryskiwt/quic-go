@@ -10,8 +10,8 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	handshake "github.com/lucas-clemente/quic-go/internal/handshake"
-	protocol "github.com/lucas-clemente/quic-go/internal/protocol"
+	handshake "github.com/ryskiwt/quic-go/internal/handshake"
+	protocol "github.com/ryskiwt/quic-go/internal/protocol"
 )
 
 // MockQuicSession is a mock of QuicSession interface

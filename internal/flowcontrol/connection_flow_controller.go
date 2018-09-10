@@ -3,10 +3,10 @@ package flowcontrol
 import (
 	"fmt"
 
-	"github.com/lucas-clemente/quic-go/internal/congestion"
-	"github.com/lucas-clemente/quic-go/internal/protocol"
-	"github.com/lucas-clemente/quic-go/internal/utils"
-	"github.com/lucas-clemente/quic-go/qerr"
+	"github.com/ryskiwt/quic-go/internal/congestion"
+	"github.com/ryskiwt/quic-go/internal/protocol"
+	"github.com/ryskiwt/quic-go/internal/utils"
+	"github.com/ryskiwt/quic-go/qerr"
 )
 
 type connectionFlowController struct {

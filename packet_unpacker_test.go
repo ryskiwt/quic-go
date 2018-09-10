@@ -4,9 +4,9 @@ import (
 	"bytes"
 
 	"github.com/golang/mock/gomock"
-	"github.com/lucas-clemente/quic-go/internal/protocol"
-	"github.com/lucas-clemente/quic-go/internal/wire"
-	"github.com/lucas-clemente/quic-go/qerr"
+	"github.com/ryskiwt/quic-go/internal/protocol"
+	"github.com/ryskiwt/quic-go/internal/wire"
+	"github.com/ryskiwt/quic-go/qerr"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

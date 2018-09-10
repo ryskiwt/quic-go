@@ -3,8 +3,8 @@ package chrome_test
 import (
 	"fmt"
 
-	"github.com/lucas-clemente/quic-go/integrationtests/tools/testserver"
-	"github.com/lucas-clemente/quic-go/internal/protocol"
+	"github.com/ryskiwt/quic-go/integrationtests/tools/testserver"
+	"github.com/ryskiwt/quic-go/internal/protocol"
 
 	. "github.com/onsi/ginkgo"
 )

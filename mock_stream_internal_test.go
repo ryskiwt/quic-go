@@ -10,8 +10,8 @@ import (
 	time "time"
 
 	gomock "github.com/golang/mock/gomock"
-	protocol "github.com/lucas-clemente/quic-go/internal/protocol"
-	wire "github.com/lucas-clemente/quic-go/internal/wire"
+	protocol "github.com/ryskiwt/quic-go/internal/protocol"
+	wire "github.com/ryskiwt/quic-go/internal/wire"
 )
 
 // MockStreamI is a mock of StreamI interface

@@ -6,11 +6,11 @@ import (
 	"time"
 
 	quic "github.com/lucas-clemente/quic-go"
-	"github.com/lucas-clemente/quic-go/integrationtests/tools/proxy"
-	"github.com/lucas-clemente/quic-go/internal/protocol"
-	"github.com/lucas-clemente/quic-go/qerr"
+	"github.com/ryskiwt/quic-go/integrationtests/tools/proxy"
+	"github.com/ryskiwt/quic-go/internal/protocol"
+	"github.com/ryskiwt/quic-go/qerr"
 
-	"github.com/lucas-clemente/quic-go/internal/testdata"
+	"github.com/ryskiwt/quic-go/internal/testdata"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
