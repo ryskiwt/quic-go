@@ -24,6 +24,8 @@ install:
   - go get github.com/onsi/gomega
   - go version
   - go env
+  - go get -v -t .
+  - rd /s /q integrationtests # prevent downloading of the quic_clients
   - go get -v -t ./...
 
 build_script:
