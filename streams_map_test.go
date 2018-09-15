@@ -71,7 +71,7 @@ var _ = Describe("Streams Map (for IETF QUIC)", func() {
 
 			BeforeEach(func() {
 				mockSender = NewMockStreamSender(mockCtrl)
-				m = newStreamsMap(mockSender, newFlowController, maxBidiStreams, maxUniStreams, perspective, versionIETFFrames).(*streamsMap)
+				m = newStreamsMap(mockSender, newFlowController, maxBidiStreams, maxUniStreams, perspective, versionIETFFrames, false).(*streamsMap)
 			})
 
 			Context("opening", func() {

@@ -29,7 +29,7 @@ var _ = Describe("Receive Stream", func() {
 	BeforeEach(func() {
 		mockSender = NewMockStreamSender(mockCtrl)
 		mockFC = mocks.NewMockStreamFlowController(mockCtrl)
-		str = newReceiveStream(streamID, mockSender, mockFC, versionIETFFrames)
+		str = newReceiveStream(streamID, mockSender, mockFC, versionIETFFrames, false)
 
 		timeout := scaleDuration(250 * time.Millisecond)
 		strWithTimeout = gbytes.TimeoutReader(str, timeout)

@@ -21,6 +21,6 @@ var _ = Describe("Crypto Stream", func() {
 	It("sets the read offset", func() {
 		str.setReadOffset(0x42)
 		Expect(str.receiveStream.readOffset).To(Equal(protocol.ByteCount(0x42)))
-		Expect(str.receiveStream.frameQueue.readPos).To(Equal(protocol.ByteCount(0x42)))
+		Expect(str.receiveStream.frameQueue.(*frameSorterImpl).readPos).To(Equal(protocol.ByteCount(0x42)))
 	})
 })
